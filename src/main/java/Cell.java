@@ -1,9 +1,9 @@
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Cell
 {
     public static ArrayList<Cell> Cells = new ArrayList<Cell>();
+    private static GameWindow window = null;
     public boolean alive;
     public int x, y;
 
@@ -17,13 +17,40 @@ public class Cell
 
     }
 
+    public Cell(Cell c)
+    {
+        this.alive = c.alive;
+        this.x = c.x;
+        this.y = c.y;
+    }
+
+    public static void setWindow(GameWindow w)
+    {
+        window = w;
+    }
+
     public static Cell getCell(int x, int y)
+    {
+        for(Cell c : Cells)
+        {
+            if(!window.running) break;
+
+            if(c.x == x && c.y == y)
+            {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
+    public static Cell getCellCopy(int x, int y)
     {
         for(Cell c : Cells)
         {
             if(c.x == x && c.y == y)
             {
-                return c;
+                return new Cell(c);
             }
         }
 
@@ -73,4 +100,10 @@ public class Cell
         return aliveCells;
 
     }
+
+    public static void purge()
+    {
+        Cells.clear();
+    }
+
 }
